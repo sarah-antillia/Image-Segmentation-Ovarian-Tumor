@@ -120,16 +120,22 @@ class ImageMaskDatasetGenerator:
       mask_filepath = os.path.join(input_masks_dir, pngname)
       print("--- maskfilepath {}".format(mask_filepath))
       mask = Image.open(mask_filepath).convert("RGB")
+      #w, h = image.size
+      #image = image.resize((w, h))
       
       basename = basename.replace(".JPG", ".jpg")
       image_output_filepath = os.path.join(output_images_dir, basename)
       
       squared_image = self.resize_to_square(image)
+      # Save the cropped_square_image
+      #cropped = self.crop_image(squared_image)
       squared_image.save(image_output_filepath)
       print("--- Saved cropped_square_image {}".format(image_output_filepath))
 
       self.augment(squared_image, output_images_dir, basename)
    
+      #print("--- mask_file {}".format(mask_file)) 
+
       mask_color = (255, 255, 255)
       xmask = self.create_mono_color_mask(mask, mask_color= mask_color)
    
@@ -145,6 +151,7 @@ class ImageMaskDatasetGenerator:
       mask_output_filepath = os.path.join(output_masks_dir, basename)
 
       squared_mask = self.resize_to_square(xmask)
+      #cropped_mask = self.crop_image(squared_mask)
       squared_mask.save(mask_output_filepath)
 
       print("--- Saved cropped_squared_mask {}".format(mask_output_filepath))
